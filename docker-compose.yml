@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: vehicle-ml-agent
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=gpt-4o-mini
+    volumes:
+      - ./vehicle_database.db:/app/vehicle_database.db
+      - ./sample_images:/app/sample_images
+    restart: unless-stopped

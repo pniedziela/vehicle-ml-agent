@@ -1,0 +1,135 @@
+.results-table-wrapper {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+}
+
+.results-table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.results-table-header h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.results-count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--accent-indigo-glow);
+    color: var(--accent-indigo-hover);
+}
+
+.results-table-scroll {
+    overflow-x: auto;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.results-table th {
+    text-align: left;
+    padding: 0.7rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-subtle);
+    white-space: nowrap;
+    background: var(--bg-secondary);
+}
+
+.results-table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.results-table tbody tr {
+    transition: background var(--transition-fast);
+}
+
+.results-table tbody tr:hover {
+    background: var(--bg-surface-hover);
+}
+
+.results-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ─── Badges ─────────────────────────── */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge-car {
+    background: var(--badge-car-bg);
+    color: var(--badge-car-text);
+}
+
+.badge-suv {
+    background: var(--badge-suv-bg);
+    color: var(--badge-suv-text);
+}
+
+.badge-truck {
+    background: var(--badge-truck-bg);
+    color: var(--badge-truck-text);
+}
+
+.badge-moto {
+    background: var(--badge-moto-bg);
+    color: var(--badge-moto-text);
+}
+
+.badge-bus {
+    background: var(--badge-bus-bg);
+    color: var(--badge-bus-text);
+}
+
+.badge-other {
+    background: var(--badge-other-bg);
+    color: var(--badge-other-text);
+}
+
+/* ─── Empty state ────────────────────── */
+.results-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.results-empty svg {
+    margin-bottom: 1rem;
+    opacity: 0.4;
+}
+
+.results-empty p {
+    font-size: 0.9rem;
+}

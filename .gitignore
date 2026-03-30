@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual env
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+
+# Database
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PyTorch model cache (downloaded automatically)
+# torch hub cache can be large
+.cache/
+
+# Pytest
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Frontend
+frontend/node_modules/
+frontend/dist/

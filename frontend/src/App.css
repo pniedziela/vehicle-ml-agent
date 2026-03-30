@@ -1,0 +1,71 @@
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-content {
+    flex: 1;
+    padding: 2.5rem 3rem;
+    max-width: 960px;
+    width: 100%;
+}
+
+/* ─── Mobile hamburger ───────────────── */
+.mobile-header {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    z-index: 90;
+}
+
+.mobile-burger {
+    padding: 0.5rem;
+    background: transparent;
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+}
+
+.mobile-header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99;
+}
+
+.mobile-overlay.visible {
+    display: block;
+}
+
+/* ─── Responsive ─────────────────────── */
+@media (max-width: 768px) {
+    .app-main {
+        margin-left: 0;
+    }
+
+    .app-content {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .mobile-header {
+        display: flex;
+    }
+}

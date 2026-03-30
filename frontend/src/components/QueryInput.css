@@ -1,0 +1,110 @@
+.query-input-wrapper {
+    margin-bottom: 1.75rem;
+}
+
+.query-input-bar {
+    display: flex;
+    gap: 0.75rem;
+    align-items: stretch;
+}
+
+.query-input-bar input {
+    flex: 1;
+    padding: 0.85rem 1.15rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.query-input-bar input::placeholder {
+    color: var(--text-muted);
+}
+
+.query-input-bar input:focus {
+    border-color: var(--accent-indigo);
+    box-shadow: 0 0 0 3px var(--accent-indigo-glow);
+}
+
+.query-send-btn {
+    padding: 0 1.5rem;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--accent-indigo), var(--accent-violet));
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.query-send-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+}
+
+.query-send-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.query-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.query-send-btn .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ─── Example Chips ──────────────────── */
+.query-examples {
+    margin-top: 0.85rem;
+}
+
+.query-examples-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+}
+
+.query-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.query-chip {
+    padding: 0.4rem 0.85rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.query-chip:hover {
+    border-color: var(--accent-indigo);
+    color: var(--text-primary);
+    background: var(--accent-indigo-glow);
+}

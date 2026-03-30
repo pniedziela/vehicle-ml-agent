@@ -1,0 +1,122 @@
+.file-upload-zone {
+    border: 2px dashed var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-default);
+    position: relative;
+    overflow: hidden;
+}
+
+.file-upload-zone:hover,
+.file-upload-zone.drag-over {
+    border-color: var(--accent-indigo);
+    background: var(--accent-indigo-glow);
+}
+
+.file-upload-zone input {
+    display: none;
+}
+
+.file-upload-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1rem;
+    border-radius: var(--radius-lg);
+    background: var(--bg-elevated);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-indigo);
+}
+
+.file-upload-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.35rem;
+}
+
+.file-upload-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ─── Preview ────────────────────────── */
+.file-upload-preview {
+    margin-top: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+}
+
+.file-upload-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    border: 1px solid var(--border-subtle);
+}
+
+.file-upload-info {
+    flex: 1;
+    text-align: left;
+}
+
+.file-upload-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.15rem;
+    word-break: break-all;
+}
+
+.file-upload-size {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.file-upload-remove {
+    padding: 0.4rem;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    transition: all var(--transition-fast);
+}
+
+.file-upload-remove:hover {
+    background: var(--bg-elevated);
+    color: var(--error);
+}
+
+/* ─── Submit button ──────────────────── */
+.file-upload-submit {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--accent-indigo), var(--accent-violet));
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all var(--transition-fast);
+}
+
+.file-upload-submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+}
+
+.file-upload-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

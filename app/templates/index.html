@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle ML Agent</title>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --border: #2a2d3a;
+            --text: #e4e4e7;
+            --text-muted: #8b8d98;
+            --primary: #6366f1;
+            --primary-hover: #818cf8;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ── Tabs ─────────────────────────────── */
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        .tab:hover { color: var(--text); }
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ── Forms ────────────────────────────── */
+        .input-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        input[type="text"], textarea {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--primary);
+        }
+        textarea { resize: vertical; min-height: 60px; }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        button:hover { background: var(--primary-hover); }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ── File upload ──────────────────────── */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            margin-bottom: 1rem;
+        }
+        .upload-area:hover { border-color: var(--primary); }
+        .upload-area input { display: none; }
+
+        /* ── Results ──────────────────────────── */
+        .result-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .sql-display {
+            background: #12141d;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #a78bfa;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th {
+            text-align: left;
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        td {
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        tr:last-child td { border-bottom: none; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .badge-car { background: #1e3a5f; color: #60a5fa; }
+        .badge-truck { background: #3b1f1f; color: #f87171; }
+        .badge-moto { background: #1f3b2f; color: #4ade80; }
+        .badge-other { background: #2a2a2a; color: #a1a1aa; }
+
+        .error-msg {
+            color: var(--error);
+            padding: 0.75rem 1rem;
+            background: rgba(239,68,68,0.1);
+            border-radius: 6px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 18px; height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .example-btn {
+            padding: 0.4rem 0.8rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .example-btn:hover {
+            border-color: var(--primary);
+            color: var(--text);
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login -->
+    <div id="login-section" style="display:none; max-width:360px; margin:8rem auto; padding:1.5rem; background:var(--surface); border:1px solid var(--border); border-radius:12px;">
+        <h2 style="margin-bottom:1.25rem; font-size:1.2rem;">🔐 Logowanie</h2>
+        <input type="text" id="login-user" placeholder="Nazwa użytkownika" style="width:100%; margin-bottom:0.75rem;" />
+        <input type="password" id="login-pass" placeholder="Hasło" style="width:100%; margin-bottom:0.75rem;" onkeydown="if(event.key==='Enter')doLogin()" />
+        <button onclick="doLogin()" style="width:100%;">Zaloguj</button>
+        <div id="login-error" style="margin-top:0.75rem; color:var(--error); font-size:0.9rem;"></div>
+    </div>
+
+    <!-- App -->
+    <div id="app-section" style="display:none;">
+    <div class="container">
+        <header>
+            <h1>🚗 Vehicle ML Agent</h1>
+            <p>Zadaj pytanie o pojazdy w języku naturalnym lub prześlij zdjęcie do klasyfikacji</p>
+            <button onclick="doLogout()" style="margin-top:0.75rem; padding:0.4rem 1rem; font-size:0.8rem; background:var(--surface); border:1px solid var(--border);">Wyloguj</button>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="agent">Agent AI</div>
+            <div class="tab" data-tab="classify">Klasyfikator obrazów</div>
+        </div>
+
+        <!-- ── Agent Tab ──────────────────────── -->
+        <div class="tab-content active" id="tab-agent">
+            <div class="label">Przykładowe pytania</div>
+            <div class="examples">
+                <span class="example-btn" onclick="setQuestion(this.textContent)">Znajdź wszystkie samochody, których właścicielem był Jan Kowalski.</span>
+                <span class="example-btn" onclick="setQuestion(this.textContent)">Pokaż pojazdy droższe niż 100000 zł.</span>
+                <span class="example-btn" onclick="setQuestion(this.textContent)">Kto kupił BMW X5?</span>
+                <span class="example-btn" onclick="setQuestion(this.textContent)">Wyświetl historię transakcji z 2021 roku.</span>
+                <span class="example-btn" onclick="setQuestion(this.textContent)">Ile pojazdów jest dostępnych?</span>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="question" placeholder="Zadaj pytanie o pojazdy…" />
+                <button id="askBtn" onclick="askQuestion()">Zapytaj</button>
+            </div>
+
+            <div id="agent-results"></div>
+        </div>
+
+        <!-- ── Classifier Tab ─────────────────── -->
+        <div class="tab-content" id="tab-classify">
+            <div class="upload-area" onclick="document.getElementById('imageInput').click()">
+                <input type="file" id="imageInput" accept="image/*" onchange="onFileSelected(event)" />
+                <p>📷 Kliknij lub przeciągnij zdjęcie pojazdu</p>
+                <p style="color:var(--text-muted); font-size:0.85rem; margin-top:0.5rem;">JPG, PNG – max 10 MB</p>
+            </div>
+
+            <div id="selected-file" style="margin-bottom:1rem; color:var(--text-muted); font-size:0.9rem;"></div>
+
+            <button id="classifyBtn" onclick="classifyImage()" disabled>Klasyfikuj</button>
+
+            <div id="classify-results" style="margin-top:1rem;"></div>
+        </div>
+    </div>
+    </div> <!-- /app-section -->
+
+    <script>
+        // ── Auth ────────────────────────────────
+        function getToken() { return localStorage.getItem('auth_token'); }
+        function setToken(t) { localStorage.setItem('auth_token', t); }
+        function clearToken() { localStorage.removeItem('auth_token'); }
+
+        function authHeaders() {
+            const t = getToken();
+            return t ? { 'Authorization': 'Bearer ' + t } : {};
+        }
+
+        function showApp() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('app-section').style.display = 'block';
+        }
+
+        function showLogin(msg) {
+            document.getElementById('app-section').style.display = 'none';
+            document.getElementById('login-section').style.display = 'block';
+            if (msg) document.getElementById('login-error').textContent = msg;
+        }
+
+        async function doLogin() {
+            const u = document.getElementById('login-user').value.trim();
+            const p = document.getElementById('login-pass').value;
+            try {
+                const resp = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p }),
+                });
+                if (!resp.ok) { showLogin('Nieprawidłowe dane logowania.'); return; }
+                const data = await resp.json();
+                setToken(data.access_token);
+                showApp();
+            } catch (e) {
+                showLogin('Błąd połączenia.');
+            }
+        }
+
+        function doLogout() { clearToken(); showLogin(''); }
+
+        // Init
+        if (getToken()) { showApp(); } else { showLogin(''); }
+
+        // ── Tab switching ───────────────────────
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        function setQuestion(text) {
+            document.getElementById('question').value = text;
+        }
+
+        // ── Agent ───────────────────────────────
+        async function askQuestion() {
+            const q = document.getElementById('question').value.trim();
+            if (!q) return;
+
+            const btn = document.getElementById('askBtn');
+            const results = document.getElementById('agent-results');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Przetwarzam…';
+            results.innerHTML = '';
+
+            try {
+                const resp = await fetch('/api/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+                    body: JSON.stringify({ question: q }),
+                });
+                if (resp.status === 401) { doLogout(); return; }
+                const data = await resp.json();
+
+                let html = '';
+
+                // SQL
+                html += '<div class="label">Wygenerowane zapytanie SQL</div>';
+                html += `<div class="sql-display">${escapeHtml(data.generated_sql || '—')}</div>`;
+
+                if (data.error) {
+                    html += `<div class="error-msg">⚠️ ${escapeHtml(data.error)}</div>`;
+                } else if (!data.results || data.results.length === 0) {
+                    html += '<div class="result-box">Brak wyników.</div>';
+                } else {
+                    html += `<div class="label">Wyniki (${data.row_count} rekordów)</div>`;
+                    html += '<div class="result-box" style="overflow-x:auto;">';
+                    html += renderTable(data.results);
+                    html += '</div>';
+                }
+
+                results.innerHTML = html;
+            } catch (err) {
+                results.innerHTML = `<div class="error-msg">Błąd: ${err.message}</div>`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Zapytaj';
+            }
+        }
+
+        // Enter key support
+        document.getElementById('question').addEventListener('keydown', e => {
+            if (e.key === 'Enter') askQuestion();
+        });
+
+        function renderTable(rows) {
+            if (!rows.length) return '';
+            const keys = Object.keys(rows[0]);
+            let t = '<table><thead><tr>';
+            keys.forEach(k => { t += `<th>${escapeHtml(k)}</th>`; });
+            t += '</tr></thead><tbody>';
+            rows.forEach(row => {
+                t += '<tr>';
+                keys.forEach(k => {
+                    let val = row[k];
+                    if (k === 'klasyfikacja_obrazu' && val) {
+                        const cls = getBadgeClass(val);
+                        t += `<td><span class="badge ${cls}">${escapeHtml(String(val))}</span></td>`;
+                    } else {
+                        t += `<td>${escapeHtml(String(val ?? '—'))}</td>`;
+                    }
+                });
+                t += '</tr>';
+            });
+            t += '</tbody></table>';
+            return t;
+        }
+
+        function getBadgeClass(label) {
+            if (label.includes('samochód') || label.includes('SUV')) return 'badge-car';
+            if (label.includes('ciężarówka')) return 'badge-truck';
+            if (label.includes('motocykl')) return 'badge-moto';
+            return 'badge-other';
+        }
+
+        // ── Classifier ─────────────────────────
+        let selectedFile = null;
+
+        function onFileSelected(event) {
+            selectedFile = event.target.files[0];
+            document.getElementById('selected-file').textContent = selectedFile
+                ? `Wybrano: ${selectedFile.name}`
+                : '';
+            document.getElementById('classifyBtn').disabled = !selectedFile;
+        }
+
+        async function classifyImage() {
+            if (!selectedFile) return;
+
+            const btn = document.getElementById('classifyBtn');
+            const results = document.getElementById('classify-results');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Klasyfikuję…';
+            results.innerHTML = '';
+
+            const fd = new FormData();
+            fd.append('file', selectedFile);
+
+            try {
+                const resp = await fetch('/api/classify', { method: 'POST', headers: { ...authHeaders() }, body: fd });
+                if (resp.status === 401) { doLogout(); return; }
+                const data = await resp.json();
+
+                if (resp.ok) {
+                    results.innerHTML = `
+                        <div class="result-box">
+                            <div class="label">Wynik klasyfikacji</div>
+                            <table>
+                                <tr><td style="color:var(--text-muted)">Typ pojazdu</td>
+                                    <td><span class="badge ${getBadgeClass(data.predicted_class)}">${escapeHtml(data.predicted_class)}</span></td></tr>
+                                <tr><td style="color:var(--text-muted)">Pewność</td>
+                                    <td>${(data.confidence * 100).toFixed(1)}%</td></tr>
+                                <tr><td style="color:var(--text-muted)">Etykieta ImageNet</td>
+                                    <td>${escapeHtml(data.imagenet_label)}</td></tr>
+                            </table>
+                        </div>`;
+                } else {
+                    results.innerHTML = `<div class="error-msg">${escapeHtml(data.detail || 'Błąd')}</div>`;
+                }
+            } catch (err) {
+                results.innerHTML = `<div class="error-msg">Błąd: ${err.message}</div>`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Klasyfikuj';
+            }
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

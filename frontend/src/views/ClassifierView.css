@@ -1,0 +1,36 @@
+.classifier-view {
+    max-width: 100%;
+}
+
+.classifier-view-header {
+    margin-bottom: 2rem;
+}
+
+.classifier-view-header h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+}
+
+.classifier-view-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.classifier-result-section {
+    margin-top: 2rem;
+}
+
+.classifier-error {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-md);
+    color: var(--error);
+    font-size: 0.9rem;
+    margin-top: 1.5rem;
+}
