@@ -1,6 +1,6 @@
 # 🚗 Vehicle ML Agent
 
-Aplikacja łącząca **klasyfikację obrazów pojazdów** (MobileNetV2) z **agentem AI** tłumaczącym pytania w języku naturalnym na zapytania SQL.
+Aplikacja łącząca **klasyfikację obrazów pojazdów** (EfficientNet-B0) z **agentem AI** tłumaczącym pytania w języku naturalnym na zapytania SQL.
 
 > Zadanie rekrutacyjne – Machine Learning & AI Agent
 
@@ -24,19 +24,19 @@ Aplikacja łącząca **klasyfikację obrazów pojazdów** (MobileNetV2) z **agen
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│                    Web UI / REST API                  │
-│                     (FastAPI)                         │
+│                    Web UI / REST API                 │
+│                     (FastAPI)                        │
 ├──────────────┬──────────────────┬────────────────────┤
 │  POST /api/  │  POST /api/      │  GET /             │
 │  classify    │  ask             │  (Web UI)          │
 ├──────────────┼──────────────────┼────────────────────┤
 │  Classifier  │   AI Agent       │  Jinja2            │
 │  Service     │   Service        │  Templates         │
-│  (MobileNet  │   (OpenAI        │                    │
-│   V2)        │    GPT-4o-mini)  │                    │
+│              │   (OpenAI        │                    │
+│              │    GPT-4o-mini)  │                    │
 ├──────────────┴──────────────────┴────────────────────┤
-│               SQLite (dev) / PostgreSQL (prod)                │
-│           + SQLAlchemy ORM (auto-detects driver)             │
+│               SQLite (dev) / PostgreSQL (prod)       │
+│           + SQLAlchemy ORM (auto-detects driver)     │
 │   vehicles │ owners │ transaction_history │ images   │
 └──────────────────────────────────────────────────────┘
 ```
