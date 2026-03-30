@@ -301,6 +301,6 @@ pytest tests/test_api.py -v
 - **Monitoring** – Prometheus metrics, structured logging
 - **Cache** – Redis cache dla powtarzających się zapytań SQL
 - **Alembic** – migracje schematu bazy danych
-
+- **Orchestrator LLM** - rozbudowa orchestratora LLM, lepsza walidacja zapytań/anty prompt-injection, walidacja zwracanych odpowiedzi. 
 ---
 
